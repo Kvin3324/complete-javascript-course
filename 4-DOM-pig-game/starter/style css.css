@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
 
 .clearfix::after {
@@ -26,10 +26,22 @@ body {
     color: #555;
 }
 
+h1 {
+    color: #EA4D4D;
+    margin-left: 5%;
+}
+
+#score-max {
+  margin-left: 5%;
+  margin-top: 20px;
+  padding: 6px 0;
+  border-radius: 10%;
+}
+
 .wrapper {
     width: 1000px;
     position: absolute;
-    top: 50%;
+    top: 56%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
@@ -80,7 +92,7 @@ body {
     color: #EB4D4D;
     top: -7px;
     right: 10px;
-    
+
 }
 
 .player-current-box {
@@ -141,13 +153,17 @@ i {
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
 
-.dice {
+.dice, .dice-2 {
     position: absolute;
     left: 50%;
-    top: 178px;
+    top: 169px;
     transform: translateX(-50%);
     height: 100px;
     box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+}
+
+.dice-2 {
+  top: 283px;
 }
 
 .winner { background-color: #f7f7f7; }
