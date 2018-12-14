@@ -71,7 +71,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         nextPlayer();
       }
     } else {
-      if (scores[activePlayer] >= 10) {
+      if (scores[activePlayer] >= 100) {
       gamePlaying = false;
       winner();
     } else {
