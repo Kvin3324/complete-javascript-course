@@ -90,10 +90,11 @@ var jane = Object.create(personProto, {
 
 /* 1. Object.create builds an object that inherits from
 from the one that we passed in the first argument.
+*/
 
 /* 2. Thefunction constructor the newly created object
 inherits from the constructor's prototype property.
-
+*/
 
 
 // Primitives vs Objects
@@ -112,7 +113,7 @@ inherits from the constructor's prototype property.
 // };
 
 
-// // Objects
+// Objects
 // var obj2 = obj1;
 // obj1.age = 30;
 // console.log(obj1.age);
@@ -139,41 +140,134 @@ inherits from the constructor's prototype property.
 
 
 
-var years = [1990, 1965, 1937, 2005, 1998];
+// var years = [1990, 1965, 1937, 2005, 1998];
 
-function arrayCalc(arr, fn) {
-    var arrRes = [];
-    for (var i = 0; i < arr.length; i++) {
-      arrRes.push(fn(arr[i]));
+// function arrayCalc(arr, fn) {
+//     var arrRes = [];
+//     for (var i = 0; i < arr.length; i++) {
+//       arrRes.push(fn(arr[i]));
+//     }
+//     return arrRes;
+// }
+
+// function calculateAge(el) {
+//   return 2016 - el;
+// }
+
+
+// function isFullAge(el) {
+//   return el >= 18;
+// }
+
+// function maxHeartRate(el) {
+//   if (el >= 18 && el <= 81) {
+//     return Math.round(206.9 - (0.67 * el));
+//   } else {
+//     return - 1;
+//   }
+// }
+
+
+
+// var ages = arrayCalc(years, calculateAge);
+// var fullAge = arrayCalc(ages, isFullAge);
+// var rates = arrayCalc(ages, maxHeartRate);
+
+// console.log(ages);
+// console.log(rates);
+
+
+// Functions returning functions
+
+function interviewQuestion(job) {
+    if (job === 'designer') {
+      return function(name) {
+        console.log(name + ' can you please explain what UX design is ?');
+      }
+    } else if (job === 'teacher') {
+      return function(name) {
+        console.log('What subject do you teach, ' + name + '?');
+      }
+    } else {
+      return function(name) {
+        console.log('Hello' + name + ' , what do you do?');
+      }
     }
-    return arrRes;
-}
-
-function calculateAge(el) {
-  return 2016 - el;
 }
 
 
-function isFullAge(el) {
-  return el >= 18;
-}
+var teacherQuestion = interviewQuestion('teacher');
+var designerQuestion = interviewQuestion('designer');
 
-function maxHeartRate(el) {
-  if (el >= 18 && el <= 81) {
-    return Math.round(206.9 - (0.67 * el));
-  } else {
-    return - 1;
-  }
-}
+teacherQuestion('John');
+designerQuestion('John');
+designerQuestion('Jane');
+designerQuestion('Mike');
+designerQuestion('Mark');
 
+interviewQuestion('teacher')('Mark');
 
 
-var ages = arrayCalc(years, calculateAge);
-var fullAge = arrayCalc(ages, isFullAge);
-var rates = arrayCalc(ages, maxHeartRate);
+// function littleBroLuc(job) {
+//   if (job === 'Js teacher') {
+//     return function(name) {
+//       console.log('Coucou je suis ' + name + ' le Js teacher de Mcjo');
+//     }
+//   } else if (job === 'Uber deliver') {
+//     return function(name) {
+//       console.log('Coucou je suis ' + name + ' le Uber fou');
+//     }
+//   } else {
+//     return function(name) {
+//       console.log('Cc je suis' + name + ' le chomeur');
+//     }
+//   }
+// }
 
-console.log(ages);
-console.log(rates);
+// var jsQuestion = littleBroLuc('Js teacher');
+// var UberQuestion = littleBroLuc('Uber deliver');
+
+// jsQuestion('Lucas');
+// UberQuestion('Lucas');
+// jsQuestion('Kévin');
+// jsQuestion('Florian');
+
+
+// Iife
+
+// function game() {
+//   var score = Math.random() * 10;
+//   console.log(score >= 5)
+// };
+
+// game();
+
+(function() {
+  var score = Math.random() * 10;
+    console.log(score >= 5);
+  })();
+
+// console.log(score);
+
+
+(function(goodLuck) {
+  var score = Math.random() * 10;
+    console.log(score >= 5 - goodLuck);
+  })(5);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
