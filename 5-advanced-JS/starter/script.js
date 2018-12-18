@@ -230,7 +230,6 @@ inherits from the constructor's prototype property.
 // jsQuestion('Lucas');
 // UberQuestion('Lucas');
 // jsQuestion('Kévin');
-// jsQuestion('Florian');
 
 
 // Iife
@@ -284,9 +283,6 @@ retirementUS(1990);
 
 
 // retirement(66)(1990);
-
-
-// Functions returning functions
 
 function interviewQuestion(job) {
   return function(name) {
