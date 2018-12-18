@@ -30,6 +30,9 @@ So make sure that all your code is private and doesn't interfere with the other 
 10. Track the user's score to make the game more fun! So each time an answer is correct, add 1 point to the score (Hint: I'm going to use the power of closures for this, but you don't have to, just do this with the tools you feel more comfortable at this point).
 11. Display the score in the console. Use yet another method for this.
 */
+
+
+
 /**
 * Variables
 */
@@ -54,28 +57,33 @@ function loopObject(object) { //TODO: Loop in object in params.
 function pushInTab(question) {
   tab.push(question);
 }
-// function displayCorrectAnswer() {
-//   if (answer.value = 0) {
-//     console.log('Right answer!')
-//   } else {
-//     console.log('Sorry, not good for u...')
-//   }
-// };
 var Question = function(question) { //TODO: Create new class.
   this.question = question;
   pushInTab(this.question);
   this.answer = {
-    0: '0:Yes',
-    1: '1:No'
+    0: '0: Yes',
+    1: '1: No'
   };
 }
+function loopTab(tab, number, object) {
+  for (var i = 0; i < tab.length; i++) {
+      if (i === number) {
+        console.log( i + ': ' + tab[i]);
+        loopObject(object.answer);
+      }
+    }
+}
+
 
 /**
-* Déclaration
+* Exécution prog
 */
 var question1 = new Question('Is 2 greater than 1 ?');
 var question2 = new Question("Is Paris is the capitale of france ?");
-loopObject(question1);
+var question3 = new Question("Are you angry");
+var question4 = new Question("What's your name ?");
+const number = Math.round(Math.random() * tab.length);
+loopTab(tab, number, question1);
 
 while(isOk) {
   let result = prompt("Enter your reponse");
@@ -86,13 +94,6 @@ while(isOk) {
     break;
   }
 }
-
-
-
-
-
-
-
 
 
 
