@@ -31,71 +31,94 @@ So make sure that all your code is private and doesn't interfere with the other 
 11. Display the score in the console. Use yet another method for this.
 */
 
+(function() {
+  /**
+  * Variables
+  */
+  const tab = [];
+  let isOk = true;
 
-
-/**
-* Variables
-*/
-const tab = [];
-let isOk = true;
-
-/**
-* Déclaration
-*/
-function loopObject(object) { //TODO: Loop in object in params.
-  for(const key in object) {
-    let value = object[key];
-    if (typeof value === "object") {
-      for(const key2 in value) {
-        console.log(value[key2]);
+  /**
+  * Déclaration
+  */
+  function loopObject(object) { //TODO: Loop in object in params.
+    for(const key in object) {
+      let value = object[key];
+      if (typeof value === "object") {
+        for(const key2 in value) {
+          console.log(value[key2]);
+        }
+      } else {
+        console.log(value);
       }
-    } else {
-      console.log(value);
     }
   }
+  function pushInTab(object) {
+    tab.push(object);
+  }
+  var Question = function(question, answer, correct) { //TODO: Create new class.
+    this.question = question;
+    this.answer = answer;
+    this.correct = correct;
+    pushInTab(this);
+  }
+  const checkObject = function (question, answer, correct) {
+    this.question = question;
+    this.answer = answer;
+    this.correct = correct;
 }
-function pushInTab(question) {
-  tab.push(question);
-}
-var Question = function(question) { //TODO: Create new class.
-  this.question = question;
-  pushInTab(this.question);
-  this.answer = {
-    0: '0: Yes',
-    1: '1: No'
-  };
-}
-function loopTab(tab, number, object) {
-  for (var i = 0; i < tab.length; i++) {
-      if (i === number) {
-        console.log( i + ': ' + tab[i]);
-        loopObject(object.answer);
-      }
+
+// function loopTab(tab) {
+//   for (var i = 0; i < tab.length; i++) {
+//     if (i === number) {
+//       console.log(tab[i].question);
+//       for (const y of array[i].answer) {
+//             console.log(y);
+//       }
+//       return new checkObject(array[i].question, array[i].answer, array[i].correct);
+//     }
+//   }
+// }
+
+function loopInTab(array) {
+    for (let i = 0; i < array.length; i++) {
+        if (i === number) {
+            console.log(array[i].question);
+            for (const y of array[i].answer) {
+                console.log(y);
+            }
+            return new checkObject(array[i].question, array[i].answer, array[i].correct);
+        }
     }
 }
 
-
-/**
-* Exécution prog
-*/
-var question1 = new Question('Is 2 greater than 1 ?');
-var question2 = new Question("Is Paris is the capitale of france ?");
-var question3 = new Question("Are you angry");
-var question4 = new Question("What's your name ?");
-const number = Math.round(Math.random() * tab.length);
-loopTab(tab, number, question1);
-
-while(isOk) {
-  let result = prompt("Enter your reponse");
-  if (result != "exit") {
-    console.log(result);
+function correctAnswer(userAnswer, correct) {
+  if (parseInt(userAnswer) === correct) {
+    console.log('Right answer');
   } else {
-    isOk = false;
-    break;
+    console.log('Too bad: WRONG !');
   }
 }
 
+  /**
+  * Exécution prog
+  */
+  var question1 = new Question('Is 2 greater than 1 ?', ['Yes', 'No'], 0);
+  var question2 = new Question("Is Paris is the capitale of france ?", ['Yes', 'No'], 0);
+  var question3 = new Question("What is the coolest language ?", ['Js', 'PHP', 'Ruby'], 0);
+  var question4 = new Question("What's your name ?", ['John', 'Jonas', 'me'], 1);
+  var number = Math.round(Math.random() * tab.length);
 
 
-
+  while(isOk) {
+    let objectCheck = loopInTab(tab);
+    let result = prompt("Enter your reponse");
+    if (result != "exit") {
+      correctAnswer(result, objectCheck.correct);
+    } else {
+      isOk = false;
+      break;
+    }
+  }
+})();
 
