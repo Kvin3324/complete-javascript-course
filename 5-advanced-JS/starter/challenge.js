@@ -68,18 +68,6 @@ So make sure that all your code is private and doesn't interfere with the other 
     this.correct = correct;
 }
 
-// function loopTab(tab) {
-//   for (var i = 0; i < tab.length; i++) {
-//     if (i === number) {
-//       console.log(tab[i].question);
-//       for (const y of array[i].answer) {
-//             console.log(y);
-//       }
-//       return new checkObject(array[i].question, array[i].answer, array[i].correct);
-//     }
-//   }
-// }
-
 function loopInTab(array) {
     for (let i = 0; i < array.length; i++) {
         if (i === number) {
@@ -95,11 +83,11 @@ function loopInTab(array) {
 function correctAnswer(userAnswer, correct) {
   if (parseInt(userAnswer) === correct) {
     console.log('Right answer');
+    number = Math.round(Math.random() * tab.length);
   } else {
     console.log('Too bad: WRONG !');
   }
 }
-
   /**
   * Exécution prog
   */
