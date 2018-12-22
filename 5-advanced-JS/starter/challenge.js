@@ -41,27 +41,21 @@ So make sure that all your code is private and doesn't interfere with the other 
   /**
   * Déclaration
   */
-  function loopObject(object) { //TODO: Loop in object in params.
-    for(const key in object) {
-      let value = object[key];
-      if (typeof value === "object") {
-        for(const key2 in value) {
-          console.log(value[key2]);
-        }
-      } else {
-        console.log(value);
-      }
-    }
-  }
   function pushInTab(object) {
     tab.push(object);
   }
-  var Question = function(question, answer, correct) { //TODO: Create new class.
+  const Question = function(question, answer, correct) { //TODO: Create new class.
     this.question = question;
     this.answer = answer;
     this.correct = correct;
     pushInTab(this);
   }
+
+  const Player = function(nickName, score) {
+    this.nickName = nickName;
+    this.score = score;
+  }
+
   const checkObject = function (question, answer, correct) {
     this.question = question;
     this.answer = answer;
@@ -82,20 +76,25 @@ function loopInTab(array) {
 
 function correctAnswer(userAnswer, correct) {
   if (parseInt(userAnswer) === correct) {
-    console.log('Right answer');
+    console.log(`You are so clever ${player1.nickName}: Right answer !`);
     number = Math.round(Math.random() * tab.length);
+    player1.score ++;
+    console.log(`The score of ${player1.nickName} is: ${player1.score}`);
+    console.log('/*****************************/');
   } else {
-    console.log('Too bad: WRONG !');
+    alert(`Too bad: WRONG ! Your are a big shit ${player1.nickName}`);
   }
 }
   /**
   * Exécution prog
   */
-  var question1 = new Question('Is 2 greater than 1 ?', ['Yes', 'No'], 0);
-  var question2 = new Question("Is Paris is the capitale of france ?", ['Yes', 'No'], 0);
-  var question3 = new Question("What is the coolest language ?", ['Js', 'PHP', 'Ruby'], 0);
-  var question4 = new Question("What's your name ?", ['John', 'Jonas', 'me'], 1);
-  var number = Math.round(Math.random() * tab.length);
+  const userName = prompt("Enter your nickname: ");
+  const player1 = new Player(userName, 0);
+  const question1 = new Question("Is 2 greater than 1 ?", ['Yes', 'No'], 0);
+  const question2 = new Question("Is Paris is the capitale of france ?", ['Yes', 'No'], 0);
+  const question3 = new Question("What is the coolest language ?", ['Js', 'PHP', 'Ruby'], 0);
+  const question4 = new Question("What's your name ?", ['John', 'Jonas', player1.nickName], 1);
+  let number = Math.round(Math.random() * tab.length);
 
 
   while(isOk) {
