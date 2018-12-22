@@ -9,7 +9,8 @@ This is how you can start:
 
 ## Author
 You can see me later: [Kévin Joya](http://kevin-joya.fr)
-My twitter: link
+
+Your can follow me on twitter: (https://twitter.com/kvinjya)
 
 ### Init
 ```
