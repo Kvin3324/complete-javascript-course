@@ -48,7 +48,7 @@ h1 {
 #score-max {
   z-index: 1;
   position: absolute;
-  left: 50%;
+  left: 56%;
   transform: translateX(-50%);
   top: 573px;
   color: #555;
