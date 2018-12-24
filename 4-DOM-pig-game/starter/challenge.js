@@ -17,6 +17,7 @@ so take a look at the CSS code for the first one.)
 var scores, roundScore, activePlayer, gamePlaying, numberScoreMax;
 var lastDice;
 var scoreMax = document.querySelector('#score-max');
+
 init();
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
