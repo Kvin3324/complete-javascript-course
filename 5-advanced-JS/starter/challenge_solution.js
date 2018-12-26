@@ -113,7 +113,7 @@ function nextQuestion() {
 
   questions[n].displayQuestion();
 
-  var answer = (prompt('Please select the correct answer.');
+  var answer = (prompt('Please select the correct answer.'));
 
   if(answer !== "exit") {
     questions[n].checkAnswer(parseInt(answer), keepScore);
