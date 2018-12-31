@@ -1,3 +1,5 @@
+const month = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
+const date = document.querySelector('.budget__title--month');
 const description = document.querySelector('.add__description');
 const addButton = document.querySelector('.add__btn');
 const inputValue = document.querySelector('.add__value');
@@ -24,13 +26,14 @@ const Element = function (description, value, type) {
                         <div class="item__description">${this.description}</div>
                         <div class="right clearfix">
                                 <div class="item__value">${this.value}</div>
-                                <div class="item__percentage"></div>
+                                <div class="item__percentage">${this.pourcentage}%</div>
                                 <div class="item__delete">
                                 <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                         </div>
                         </div>
                 </div>`;
                 element.appendChild(htmlDiv);
+                return this.html = htmlDiv;
         }
         this.updateBudgetValue = function() {
                 if (this.type === "inc") {
@@ -41,6 +44,15 @@ const Element = function (description, value, type) {
                         document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
                 }
         }
+        this.calcPourcent = function () {
+                if (this.type === "inc") {
+                        let pourcentage = Math.round(this.value * 100 / data.inc);
+                        return this.pourcentage = pourcentage;
+                } else {
+                        let pourcentage = Math.round(this.value * 100 / data.exp);
+                        return this.pourcentage = pourcentage;
+                }
+        }
         this.calcBudget = function (budgetInc, budgetExp) {
                 const total = budgetInc - budgetExp;
                 if (total > 0) {
@@ -49,10 +61,29 @@ const Element = function (description, value, type) {
                         budgetTotal.textContent = `${total}`;
                 }
         }
+        this.deleteElem = function () {
+                const objectActual = this;
+                const deleteBtn = this.html.querySelector('.item__delete--btn');
+                deleteBtn.addEventListener('click', function () {
+                        if (objectActual.type === "inc") {
+                                objectActual.html.remove();
+                                data.inc -= objectActual.value;
+                                document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+                                objectActual.calcBudget(data.inc, data.exp);
+                        } else {
+                                objectActual.html.remove();
+                                data.exp -= objectActual.value;
+                                document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
+                                objectActual.calcBudget(data.inc, data.exp);       
+                        }
+                })
+        }   
         this.startAll = function (el) {
-                this.createHtmlElement(el);
                 this.updateBudgetValue();
+                this.calcPourcent();
+                this.createHtmlElement(el);
                 this.calcBudget(data.inc, data.exp);
+                this.deleteElem();
         }
         elementTab.push(this);
 }
@@ -79,10 +110,7 @@ function checkAddValue() {
                 alert(`Please enter a correct description and a value`);
         }
 }
-// function displayPercentage(budgetExp, budgetActionList) {
-//         const percentage = 
-//         // const percentageAction;
-// }
+
 
 document.addEventListener('keypress', function (event) {
         if (event.keyCode === 13) {
@@ -94,49 +122,6 @@ addButton.addEventListener('click', function() {
         checkAddValue();
 });
 
-document.addEventListener("click", function(event) {
-        if (event.target.className === "ion-ios-close-outline") {
-                let ancetre = event.target.closest(".item");
-                const valueAction = event.target.closest('.right').firstElementChild.textContent;
-                if (event.target.closest('.income') ) {
-                      data.inc -= valueAction;
-                      ancetre.remove(); 
-                      document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+//Date
 
-                } else {
-                        data.exp -= valueAction;
-                        ancetre.remove();
-                        document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;      
-                }
-                calcBudget(data.inc, data.exp);
-        }  
-});
-
-/************** Date
- * const month = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
-
-console.log(month[new Date().getMonth()]);
-console.log(new Date().getFullYear());
- */
-
-
-//BUDGET CONTROLLER
-            // Create new ID
-            // Create new item based on 'inc' or 'exp' type
-            // Push it into our data structure  
-            // Return the new element
-
-// UI CONTROLLER
-            // Create HTML string with placeholder text
-            // Replace the placeholder text with some actual data
-            // Insert the HTML into the DOM 
-            // Replace default value
-            // Display new income value
-
-// GLOBAL APP CONTROLLER
-        // 1. Get the filled input data
-
-        // 2. Add the item to the budgetController
-        // 3. Add the item to the UI
-        // 4. Clear fields
-        // 5. Display the budget on the UI
+date.textContent = `${new Date().getDate()}, ${month[new Date().getMonth()]}, ${new Date().getFullYear()}`;
