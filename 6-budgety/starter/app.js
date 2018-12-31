@@ -6,7 +6,6 @@ const incomeList = document.querySelector('.income__list');
 const expensesList = document.querySelector('.expenses__list');
 const budgetTotal = document.querySelector('.budget__value');
 
-
 // BUDGET CONTROLLER
 
 const data = {
@@ -30,7 +29,6 @@ function createHtmlElement(description, inputValue, element) {
                         </div>`;
         element.appendChild(htmlDiv);
 }
-
 function checkAddValue() {
         if (description.value !== "" && inputValue.value !== "") {
                 if (selectCursor.value === "inc") {
@@ -54,17 +52,6 @@ function checkAddValue() {
                 alert(`Please enter a correct description and a value`);
         }
 }
-document.addEventListener('keypress', function (event) {
-        if (event.keyCode === 13) {
-                checkAddValue();
-        }
-}); 
-
-addButton.addEventListener('click', function() {
-        checkAddValue();
-
-});
-
 function calcBudget(budgetInc, budgetExp) {
         const total = budgetInc - budgetExp;
         if (total > 0) {
@@ -73,6 +60,40 @@ function calcBudget(budgetInc, budgetExp) {
         budgetTotal.textContent = `${total}`               
         }
 }
+document.addEventListener('keypress', function (event) {
+        if (event.keyCode === 13) {
+                checkAddValue();
+        }
+}); 
+addButton.addEventListener('click', function() {
+        checkAddValue();
+});
+
+document.addEventListener("click", function(event) {
+        if (event.target.className === "ion-ios-close-outline") {
+                let ancetre = event.target.closest(".item");
+                const valueAction = event.target.closest('.right').firstElementChild.textContent;
+                if (event.target.closest('.income') ) {
+                      data.inc -= valueAction;
+                       ancetre.remove(); 
+                       document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+
+                } else {
+                        data.exp -= valueAction;
+                        ancetre.remove();
+                        document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;      
+                }
+                calcBudget(data.inc, data.exp);
+        }   
+});
+
+/************** Date
+ * const month = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
+
+console.log(month[new Date().getMonth()]);
+console.log(new Date().getFullYear());
+ */
+
 
 //BUDGET CONTROLLER
             // Create new ID
