@@ -5,9 +5,7 @@ const selectCursor = document.querySelector('.add__type');
 const incomeList = document.querySelector('.income__list');
 const expensesList = document.querySelector('.expenses__list');
 const budgetTotal = document.querySelector('.budget__value');
-
-// BUDGET CONTROLLER
-
+const elementTab = [];
 const data = {
         inc: 0,
         exp: 0
@@ -15,54 +13,81 @@ const data = {
 
 // GLOBAL APP CONTROLLER
 
-function createHtmlElement(description, inputValue, element) {
-        let htmlDiv = document.createElement('div');
-        htmlDiv.innerHTML =
+const Element = function (description, value, type) {
+        this.description = description;
+        this.value = value;
+        this.type = type;
+        this.createHtmlElement = function(element) {
+                let htmlDiv = document.createElement('div');
+                htmlDiv.innerHTML =
                 `<div class="item clearfix" id="income-0">
-                        <div class="item__description">${description}</div>
-                                <div class="right clearfix">
-                                        <div class="item__value">${inputValue}</div>
-                                        <div class="item__delete">
-                                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                                        </div>
-                                </div>
-                        </div>`;
-        element.appendChild(htmlDiv);
+                        <div class="item__description">${this.description}</div>
+                        <div class="right clearfix">
+                                <div class="item__value">${this.value}</div>
+                                <div class="item__percentage"></div>
+                                <div class="item__delete">
+                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                        </div>
+                        </div>
+                </div>`;
+                element.appendChild(htmlDiv);
+        }
+        this.updateBudgetValue = function() {
+                if (this.type === "inc") {
+                        data.inc += parseInt(this.value);
+                        document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+                } else {
+                        data.exp += parseInt(this.value);
+                        document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
+                }
+        }
+        this.calcBudget = function (budgetInc, budgetExp) {
+                const total = budgetInc - budgetExp;
+                if (total > 0) {
+                        budgetTotal.textContent = `+ ${total}`;
+                } else {
+                        budgetTotal.textContent = `${total}`;
+                }
+        }
+        this.startAll = function (el) {
+                this.createHtmlElement(el);
+                this.updateBudgetValue();
+                this.calcBudget(data.inc, data.exp);
+        }
+        elementTab.push(this);
 }
+// BUDGET CONTROLLER
+
 function checkAddValue() {
         if (description.value !== "" && inputValue.value !== "") {
                 if (selectCursor.value === "inc") {
-                        createHtmlElement(description.value, inputValue.value, incomeList);
-                        data.inc += parseInt(inputValue.value);
-                        document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
-                        calcBudget(data.inc, data.exp);
+                        let newElement = new Element(description.value, inputValue.value, selectCursor.value);
+                        newElement.startAll(incomeList);
                         description.value = "";
                         inputValue.value = "";
+                        return;
                 }
                 else if (selectCursor.value === "exp") {
-                        createHtmlElement(description.value, inputValue.value, expensesList);
-                        data.exp += parseInt(inputValue.value);
-                        document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
-                        calcBudget(data.inc, data.exp);
+                        let newElement = new Element(description.value, inputValue.value, selectCursor.value);
+                        newElement.startAll(expensesList);
                         description.value = "";
                         inputValue.value = "";
+                        return;
                 }
         }
         else {
                 alert(`Please enter a correct description and a value`);
         }
 }
-function calcBudget(budgetInc, budgetExp) {
-        const total = budgetInc - budgetExp;
-        if (total > 0) {
-        budgetTotal.textContent = `+ ${total}`       
-        } else {
-        budgetTotal.textContent = `${total}`               
-        }
-}
+// function displayPercentage(budgetExp, budgetActionList) {
+//         const percentage = 
+//         // const percentageAction;
+// }
+
 document.addEventListener('keypress', function (event) {
         if (event.keyCode === 13) {
                 checkAddValue();
+                
         }
 }); 
 addButton.addEventListener('click', function() {
@@ -75,8 +100,8 @@ document.addEventListener("click", function(event) {
                 const valueAction = event.target.closest('.right').firstElementChild.textContent;
                 if (event.target.closest('.income') ) {
                       data.inc -= valueAction;
-                       ancetre.remove(); 
-                       document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+                      ancetre.remove(); 
+                      document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
 
                 } else {
                         data.exp -= valueAction;
@@ -84,7 +109,7 @@ document.addEventListener("click", function(event) {
                         document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;      
                 }
                 calcBudget(data.inc, data.exp);
-        }   
+        }  
 });
 
 /************** Date
