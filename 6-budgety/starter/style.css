@@ -92,6 +92,9 @@ body {
     float: left;
 }
 
+.income .item__percentage {background-color: rgba(40, 185, 181, 0.3);}
+.expenses .item__percentage {background-color: rgba(255, 80, 73, 0.3);}
+
 .budget__income--percentage,
 .budget__expenses--percentage {
     float: left;
@@ -208,7 +211,12 @@ h2 {
 }
 
 .item:first-child { border-top: 1px solid #e7e7e7; }
-.item:nth-child(even) { background-color: #f7f7f7; }
+.income__list > div:nth-child(even),
+.expenses__list > div:nth-child(even) { 
+    background-color: #F7F7F7; 
+}
+
+
 
 .item__description {
     float: left;
@@ -224,7 +232,6 @@ h2 {
     margin-left: 20px;
     transition: transform 0.3s;
     font-size: 11px;
-    background-color: #FFDAD9;
     padding: 3px;
     border-radius: 3px;
     width: 32px;

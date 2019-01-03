@@ -11,10 +11,10 @@ const elementTab = [];
 const data = {
         inc: 0,
         exp: 0
-}
-
+};
+//Date
+date.textContent = `${new Date().getDate()}, ${month[new Date().getMonth()]}, ${new Date().getFullYear()}`;
 // GLOBAL APP CONTROLLER
-
 const Element = function (description, value, type) {
         this.description = description;
         this.value = value;
@@ -25,7 +25,7 @@ const Element = function (description, value, type) {
                 `<div class="item clearfix" id="income-0">
                         <div class="item__description">${this.description}</div>
                         <div class="right clearfix">
-                                <div class="item__value">${this.value}</div>
+                                <div class="item__value">${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(this.value)}</div>
                                 <div class="item__percentage">${this.pourcentage}%</div>
                                 <div class="item__delete">
                                 <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
@@ -33,56 +33,76 @@ const Element = function (description, value, type) {
                         </div>
                 </div>`;
                 element.appendChild(htmlDiv);
-                return this.html = htmlDiv;
+                this.html = htmlDiv;
+                return this.updatePercentage();
         }
         this.updateBudgetValue = function() {
                 if (this.type === "inc") {
                         data.inc += parseInt(this.value);
-                        document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
+                        document.querySelector('.budget__income--value').innerHTML = `+ ${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(data.inc)}`;
                 } else {
                         data.exp += parseInt(this.value);
-                        document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
+                        document.querySelector('.budget__expenses--value').innerHTML = `- ${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(data.exp)}`;
                 }
         }
-        this.calcPourcent = function () {
-                if (this.type === "inc") {
-                        let pourcentage = Math.round(this.value * 100 / data.inc);
-                        return this.pourcentage = pourcentage;
+        this.calcPourcent = function (element) {
+                if (element.type === "inc") {
+                        let pourcentage = Math.round(element.value * 100 / data.inc);
+                        return element.pourcentage = pourcentage;
                 } else {
-                        let pourcentage = Math.round(this.value * 100 / data.exp);
-                        return this.pourcentage = pourcentage;
+                        let pourcentage = Math.round(element.value * 100 / data.exp);
+                        return element.pourcentage = pourcentage;
                 }
         }
         this.calcBudget = function (budgetInc, budgetExp) {
-                const total = budgetInc - budgetExp;
+                let total = budgetInc - budgetExp;
                 if (total > 0) {
-                        budgetTotal.textContent = `+ ${total}`;
+                        budgetTotal.textContent = `+ ${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(total)}`;
                 } else {
-                        budgetTotal.textContent = `${total}`;
+                        budgetTotal.textContent = `${ new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(total)}`;
                 }
         }
+
+        this.updatePercentage = function () {
+                elementTab.forEach(element => {
+                        this.calcPourcent(element);
+                        element.html.querySelector('.item__percentage').textContent = `${element.pourcentage}%`;
+                });
+        }
+
         this.deleteElem = function () {
-                const objectActual = this;
                 const deleteBtn = this.html.querySelector('.item__delete--btn');
-                deleteBtn.addEventListener('click', function () {
-                        if (objectActual.type === "inc") {
-                                objectActual.html.remove();
-                                data.inc -= objectActual.value;
+                deleteBtn.addEventListener('click', () => {
+                        if (this.type === "inc") {
+                                this.html.remove();
+                                data.inc -= this.value;
                                 document.querySelector('.budget__income--value').innerHTML = `+ ${data.inc}`;
-                                objectActual.calcBudget(data.inc, data.exp);
+                                this.calcBudget(data.inc, data.exp);
+                                this.removeByDescription(elementTab);
+                                this.updatePercentage();
                         } else {
-                                objectActual.html.remove();
-                                data.exp -= objectActual.value;
+                                this.html.remove();
+                                data.exp -= this.value;
                                 document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
-                                objectActual.calcBudget(data.inc, data.exp);       
+                                this.calcBudget(data.inc, data.exp);
+                                this.removeByDescription(elementTab);
+                                this.updatePercentage();                               
                         }
                 })
-        }   
+        }
+        this.removeByDescription = function (array) {
+                for (let i = 0; i <= array.length; i++) {
+                        if (array[i].description === this.description) {
+                                array.splice(i, 1);
+                                return array;
+                        }
+                }
+        }
         this.startAll = function (el) {
                 this.updateBudgetValue();
-                this.calcPourcent();
-                this.createHtmlElement(el);
+                this.calcPourcent(this);
                 this.calcBudget(data.inc, data.exp);
+                this.createHtmlElement(el);
                 this.deleteElem();
         }
         elementTab.push(this);
@@ -92,15 +112,13 @@ const Element = function (description, value, type) {
 function checkAddValue() {
         if (description.value !== "" && inputValue.value !== "") {
                 if (selectCursor.value === "inc") {
-                        let newElement = new Element(description.value, inputValue.value, selectCursor.value);
-                        newElement.startAll(incomeList);
+                        new Element(description.value, inputValue.value, selectCursor.value).startAll(incomeList);
                         description.value = "";
                         inputValue.value = "";
                         return;
                 }
                 else if (selectCursor.value === "exp") {
-                        let newElement = new Element(description.value, inputValue.value, selectCursor.value);
-                        newElement.startAll(expensesList);
+                        new Element(description.value, inputValue.value, selectCursor.value).startAll(expensesList);
                         description.value = "";
                         inputValue.value = "";
                         return;
@@ -114,14 +132,9 @@ function checkAddValue() {
 
 document.addEventListener('keypress', function (event) {
         if (event.keyCode === 13) {
-                checkAddValue();
-                
+                checkAddValue();             
         }
 }); 
 addButton.addEventListener('click', function() {
         checkAddValue();
 });
-
-//Date
-
-date.textContent = `${new Date().getDate()}, ${month[new Date().getMonth()]}, ${new Date().getFullYear()}`;
