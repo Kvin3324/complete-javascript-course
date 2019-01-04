@@ -38,7 +38,7 @@ const Element = function (description, value, type) {
         }
         this.updateBudgetValue = function() {
                 if (this.type === "inc") {
-                        data.inc += parseInt(this.value);
+                        data.inc += parseFloat(this.value);
                         document.querySelector('.budget__income--value').innerHTML = `+ ${new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(data.inc)}`;
                 } else {
                         data.exp += parseInt(this.value);
@@ -47,11 +47,12 @@ const Element = function (description, value, type) {
         }
         this.calcPourcent = function (element) {
                 if (element.type === "inc") {
-                        let pourcentage = Math.round(element.value * 100 / data.inc);
-                        return element.pourcentage = pourcentage;
+                        let pourcentage = Math.round(element.value * 100 / parseInt((data.inc)).toFixed(2));
+                         return element.pourcentage = pourcentage;
                 } else {
                         let pourcentage = Math.round(element.value * 100 / data.exp);
-                        return element.pourcentage = pourcentage;
+                        element.pourcentage = pourcentage;
+                        this.percentageTotal(data.inc, data.exp);
                 }
         }
         this.calcBudget = function (budgetInc, budgetExp) {
@@ -86,7 +87,8 @@ const Element = function (description, value, type) {
                                 document.querySelector('.budget__expenses--value').innerHTML = `- ${data.exp}`;
                                 this.calcBudget(data.inc, data.exp);
                                 this.removeByDescription(elementTab);
-                                this.updatePercentage();                               
+                                this.updatePercentage();
+                                this.percentageTotal(data.inc, data.exp);                               
                         }
                 })
         }
@@ -97,6 +99,18 @@ const Element = function (description, value, type) {
                                 return array;
                         }
                 }
+        }
+        this.percentageTotal = function (budgetInc, budgetExp) {
+               if (data.exp !== '') {
+                const total = budgetInc - budgetExp;
+                const totalPercentage = Math.round((data.exp * 100) / total);
+                document.querySelector('.budget__expenses--percentage').textContent = `${totalPercentage}%`; 
+                document.querySelector('.budget__expenses--percentage').style.backgroundColor = 'rgba(255, 255, 255, 0.2)'; 
+               } else {
+                document.querySelector('.budget__expenses--percentage').textContent = '';     
+               }
+                
+ 
         }
         this.startAll = function (el) {
                 this.updateBudgetValue();
