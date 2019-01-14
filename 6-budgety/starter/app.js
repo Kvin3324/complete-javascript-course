@@ -109,9 +109,8 @@ const Element = function (description, value, type) {
                } else {
                 document.querySelector('.budget__expenses--percentage').textContent = '';     
                }
-                
- 
         }
+
         this.startAll = function (el) {
                 this.updateBudgetValue();
                 this.calcPourcent(this);
@@ -143,12 +142,20 @@ function checkAddValue() {
         }
 }
 
+// function changedType() {
+//         const fields = document.querySelectorAll(selectCursor, description, inputValue);
+//         if (selectCursor.value === "exp") {
+//                 fields.classList.toggle('red-focus')
+//         }
+// }
+
 
 document.addEventListener('keypress', function (event) {
         if (event.keyCode === 13) {
                 checkAddValue();             
         }
 }); 
+
 addButton.addEventListener('click', function() {
         checkAddValue();
 });
